@@ -70,6 +70,112 @@
 <p>* 蓝锥单色视：只有S型视锥细胞正常工作</p>
 <p>* 红锥单色视：只有L型视锥细胞正常工作</p>
 <p>* 绿锥单色视：只有M型视锥细胞正常工作</p>
+<h1>RGB和LMS互转</h1>
+<style>
+    #colorBox {
+        width: 100px;
+        height: 100px;
+        background-color: rgb(0, 0, 0);
+    }
+</style>
+
+<div id="colorBox"></div>
+<p>Red: <input type="range" min="0" max="255" id="redSlider" value="0"> <input type="number" min="0" max="255" id="redInput" value="0"></p>
+<p>Green: <input type="range" min="0" max="255" id="greenSlider" value="0"> <input type="number" min="0" max="255" id="greenInput" value="0"></p>
+<p>Blue: <input type="range" min="0" max="255" id="blueSlider" value="0"> <input type="number" min="0" max="255" id="blueInput" value="0"></p>
+<p>L: <input type="range" min="0" max="1" step="0.01" id="LSlider" value="0"> <input type="number" min="0" max="1" step="0.01" id="LInput" value="0"></p>
+<p>M: <input type="range" min="0" max="1" step="0.01" id="MSlider" value="0"> <input type="number" min="0" max="1" step="0.01" id="MInput" value="0"></p>
+<p>S: <input type="range" min="0" max="1" step="0.01" id="SSlider" value="0"> <input type="number" min="0" max="1" step="0.01" id="SInput" value="0"></p>
+
+<script>
+    // RGB sliders and inputs
+    var redSlider = document.getElementById("redSlider");
+    var greenSlider = document.getElementById("greenSlider");
+    var blueSlider = document.getElementById("blueSlider");
+    var redInput = document.getElementById("redInput");
+    var greenInput = document.getElementById("greenInput");
+    var blueInput = document.getElementById("blueInput");
+
+    // LMS sliders and inputs
+    var LSlider = document.getElementById("LSlider");
+    var MSlider = document.getElementById("MSlider");
+    var SSlider = document.getElementById("SSlider");
+    var LInput = document.getElementById("LInput");
+    var MInput = document.getElementById("MInput");
+    var SInput = document.getElementById("SInput");
+
+    var colorBox = document.getElementById("colorBox");
+
+    // RGB to LMS conversion matrix
+    var rgb2lms = [
+        [0.3811, 0.5783, 0.0402],
+        [0.1967, 0.7244, 0.0782],
+        [0.0241, 0.1288, 0.8444]
+    ];
+
+    // LMS to RGB conversion matrix
+    var lms2rgb = [
+        [4.4679, -3.5873, 0.1193],
+        [-1.2186, 2.3809, -0.1624],
+        [0.0497, -0.2439, 1.2045]
+    ];
+
+        function matrixMultiply(a, b) {
+            var result = [0, 0, 0];
+            for (var i = 0; i < 3; i++) {
+                for (var j = 0; j < 3; j++) {
+                    result[i] += a[i][j] * b[j];
+                }
+            }
+            return result;
+        }
+
+        function setColorFromRGB() {
+            var rgb = [redSlider.value / 255, greenSlider.value / 255, blueSlider.value / 255];
+            var lms = matrixMultiply(rgb2lms, rgb);
+
+            colorBox.style.backgroundColor = "rgb(" + rgb.map(v => v * 255) + ")";
+            redInput.value = redSlider.value;
+            greenInput.value = greenSlider.value;
+            blueInput.value = blueSlider.value;
+
+            LSlider.value = LInput.value = lms[0];
+            MSlider.value = MInput.value = lms[1];
+            SSlider.value = SInput.value = lms[2];
+        }
+
+        function setColorFromLMS() {
+            var lms = [LSlider.value, MSlider.value, SSlider.value];
+            var rgb = matrixMultiply(lms2rgb, lms);
+            var rgbScaled = rgb.map(v => v * 255);
+
+            // Check if RGB values are within the valid range
+            if (rgbScaled.every(value => value >= 0 && value <= 255)) {
+                colorBox.style.backgroundColor = "rgb(" + rgbScaled + ")";
+                redSlider.value = redInput.value = rgbScaled[0];
+                greenSlider.value = greenInput.value = rgbScaled[1];
+                blueSlider.value = blueInput.value = rgbScaled[2];
+
+                LInput.value = LSlider.value;
+                MInput.value = MSlider.value;
+                SInput.value = SSlider.value;
+            }
+        }
+
+        redSlider.addEventListener("input", setColorFromRGB);
+        greenSlider.addEventListener("input", setColorFromRGB);
+        blueSlider.addEventListener("input", setColorFromRGB);
+        redInput.addEventListener("input", setColorFromRGB);
+        greenInput.addEventListener("input", setColorFromRGB);
+        blueInput.addEventListener("input", setColorFromRGB);
+
+        LSlider.addEventListener("input", setColorFromLMS);
+        MSlider.addEventListener("input", setColorFromLMS);
+        SSlider.addEventListener("input", setColorFromLMS);
+        LInput.addEventListener("input", setColorFromLMS);
+        MInput.addEventListener("input", setColorFromLMS);
+        SInput.addEventListener("input", setColorFromLMS);
+</script>
         </div>
         <div class="container" style="">
             <div>
