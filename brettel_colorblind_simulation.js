@@ -134,7 +134,7 @@ function rgb_to_lms(rgb) {
 }
 
 function monochrome_with_severity(srgb, severity) {
-    var z = Math.round(srgb[0] * 0.00765485 + srgb[1] * 0.589729 + srgb[2] * 0.402617);
+    var z = Math.round(sRGB_from_linearRGB(sRGB_to_linearRGB_Lookup[srgb[0]] * 0 + sRGB_to_linearRGB_Lookup[srgb[1]] * 0.628 + sRGB_to_linearRGB_Lookup[srgb[2]] * 0.372));
     var r = z*severity + (1.0-severity)*srgb[0];
     var g = z*severity + (1.0-severity)*srgb[1];
     var b = z*severity + (1.0-severity)*srgb[2];
