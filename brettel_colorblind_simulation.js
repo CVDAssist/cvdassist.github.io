@@ -145,19 +145,19 @@ function monochrome_bcm_srgb(v) {
     var lms = rgb_to_lms(v);
     var s = lms[2]; // 只保留S通道
     var bcm = [s, s, s]; // 转换为灰度
-    return monochrome_with_severity(bcm, 1); // 用灰度值调整RGB的严重性
+    return bcm;
 }
 
 function monochrome_rcm_srgb(v) {
     var lms = rgb_to_lms(v);
     var r = lms[0]; // 只保留R通道
     var rcm = [r, r, r]; // 转换为灰度
-    return monochrome_with_severity(rcm, 1); // 用灰度值调整RGB的严重性
+    return rcm;
 }
 
 function monochrome_gcm_srgb(v) {
     var lms = rgb_to_lms(v);
     var g = lms[1]; // 只保留G通道
     var gcm = [g, g, g]; // 转换为灰度
-    return monochrome_with_severity(gcm, 1); // 用灰度值调整RGB的严重性
+    return gcm;
 }
