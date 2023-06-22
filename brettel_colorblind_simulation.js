@@ -24,10 +24,10 @@ var brettelFunctions = {
     Tritanopia: function (v) { return brettel(v, 'tritan', 1.0); },
     Tritanomaly: function (v) { return brettel(v, 'tritan', 0.6); },
     Achromatopsia: function (v) { return monochrome_with_severity(v, 1.0); },
-    Achromatomaly: function (v) { return monochrome_with_severity(v, 0.6); },
-	BCM: function (v) { return monochrome_bcm_srgb(v); },
-	RCM: function (v) { return monochrome_rcm_srgb(v); },
-	GCM: function (v) { return monochrome_gcm_srgb(v); },
+    Achromatomaly: function (v) { return monochrome_with_severity(v, 0.7); },
+    BCM: function (v) { return monochrome_bcm_srgb(v); },
+    RCM: function (v) { return monochrome_rcm_srgb(v); },
+    GCM: function (v) { return monochrome_gcm_srgb(v); },
 };
 
 var sRGB_to_linearRGB_Lookup = Array(256);
@@ -134,10 +134,10 @@ function rgb_to_lms(rgb) {
 }
 
 function monochrome_with_severity(srgb, severity) {
-    var z = Math.round(sRGB_from_linearRGB(sRGB_to_linearRGB_Lookup[srgb[0]] * 0 + sRGB_to_linearRGB_Lookup[srgb[1]] * 0.628 + sRGB_to_linearRGB_Lookup[srgb[2]] * 0.372));
-    var r = z*severity + (1.0-severity)*srgb[0];
-    var g = z*severity + (1.0-severity)*srgb[1];
-    var b = z*severity + (1.0-severity)*srgb[2];
+    var z = sRGB_to_linearRGB_Lookup[srgb[0]] * 0 + sRGB_to_linearRGB_Lookup[srgb[1]] * 0.628 + sRGB_to_linearRGB_Lookup[srgb[2]] * 0.372;
+    var r = sRGB_from_linearRGB(z*severity + (1.0-severity)*sRGB_to_linearRGB_Lookup[srgb[0]]);
+    var g = sRGB_from_linearRGB(z*severity + (1.0-severity)*sRGB_to_linearRGB_Lookup[srgb[1]]);
+    var b = sRGB_from_linearRGB(z*severity + (1.0-severity)*sRGB_to_linearRGB_Lookup[srgb[2]]);
     return [r, g, b];
 }
 
