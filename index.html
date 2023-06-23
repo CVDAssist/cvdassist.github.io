@@ -78,7 +78,7 @@
 <h2>模拟方法介绍</h2>
 <p>本模拟的大部分代码来自MaPePeR的开源模拟器<a href="http://mapeper.github.io/jsColorblindSimulator/">http://mapeper.github.io/jsColorblindSimulator/</a>，在此表示感谢。</p>
 <p>Simon-Liedtke, J. T., & Farup, I. (2016) 对比了多种模拟方法，最终得出Brettel的模拟是最准确的。</p>
-<p>本网页的异常三色视觉和二色视觉（除了Tetartan）均使用Brettel et al. 1997进行模拟，比常用的HCIRN模拟方法准确。但模拟异常三色视时没有专门为此设计的Machado et al. 2009准确。</p>
+<p>本网页的异常三色视觉和二色视觉（除了Tetartan）均使用Brettel et al. 1997进行模拟，比常用的HCIRN模拟方法准确。</p>
 <p>Tetartan使用HCIRN方法进行模拟，因为这种色觉异常只是理论上的，本网页仅使用HCIRN进行近似模拟。</p>
 <p>锥状单色视使用sRGB->LMS->去掉两种通道->sRGB的方法模拟，仅根据理论推算，没有经过验证，不能确保准确。</p>
 <p>全色盲模拟的过程是是sRGB->linearRGB->模拟->sRGB，仅经过了一位全色盲的验证，不能确保准确。</p>
@@ -200,9 +200,9 @@
                 <input type="file" id="fileInput"/>
 <label><input type="radio" name="colorblindType" value="Normal" checked/>正常色觉</label>
 <label><input type="radio" name="colorblindType" value="Protanopia"/>红色盲</label>
-<label><input type="radio" name="colorblindType" value="Protanomaly"/>红色弱</label>
+<label><input type="radio" name="colorblindType" value="Protanomaly"/>红色弱（~10 nm）</label>
 <label><input type="radio" name="colorblindType" value="Deuteranopia"/>绿色盲</label>
-<label><input type="radio" name="colorblindType" value="Deuteranomaly"/>绿色弱</label>
+<label><input type="radio" name="colorblindType" value="Deuteranomaly"/>绿色弱（~10 nm）</label>
 <label><input type="radio" name="colorblindType" value="Tritanopia"/>蓝色盲</label>
 <label><input type="radio" name="colorblindType" value="Tritanomaly"/>蓝色弱</label>
 <label><input type="radio" name="colorblindType" value="Achromatopsia"/>全色盲</label>
