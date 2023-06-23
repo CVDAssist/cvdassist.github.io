@@ -28,6 +28,7 @@ var brettelFunctions = {
     BCM: function (v) { return monochrome_bcm_srgb(v); },
     RCM: function (v) { return monochrome_rcm_srgb(v); },
     GCM: function (v) { return monochrome_gcm_srgb(v); },
+    Flip: function (v) { return flip_rb(v); },
 };
 
 var sRGB_to_linearRGB_Lookup = Array(256);
@@ -160,4 +161,11 @@ function monochrome_gcm_srgb(v) {
     var g = lms[1]; // 只保留G通道
     var gcm = [g, g, g]; // 转换为灰度
     return gcm;
+}
+
+function flip_rb(srgb) {
+    blueChannel = srgb[2];
+    srgb[2] = srgb[0];
+    srgb[0] = blueChannel
+    return srgb;
 }
