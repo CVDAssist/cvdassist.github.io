@@ -1,51 +1,6 @@
 <html>
     <head>
-        <style type="text/css">
-            #outputDiv canvas {
-                width: 100%;
-                height: 100%;
-            }
-            .container {
-                display: table;
-                width:100%;
-                height:100%
-            }
-            .container div {
-                display: table-row;
-            }
-
-            #dropNotification {
-                position: absolute;
-                top:100px;
-                left: 20px;
-                right:20px;
-                text-align:center;
-                pointer-events: none;
-            }
-
-            .boxed {
-                background-color: white;
-                box-shadow: 5px 5px 2px #999999;
-                border: 1px solid black;
-                border-radius: 10px;
-            }
-
-            #aboutBox {
-                position:absolute;
-                top:50px;
-                left: 25%;
-                width: 50%;
-                padding-left: 20px;
-                padding-right: 20px;
-            }
-            img.round-image {
-                border-radius: 50%;
-            }
-			
-            #method {
-                display: none;
-            }
-        </style>
+        <style type="text/css">#outputDiv canvas{width:100%;height:100%;}.container{display:table;width:100%;height:100%}.container div{display:table-row;}#dropNotification{position:absolute;top:100px;left:20px;right:20px;text-align:center;pointer-events:none;}.boxed{background-color:white;box-shadow:5px 5px 2px #999999;border:1px solid black;border-radius:10px;}#aboutBox{position:absolute;top:50px;left:25%;width:50%;padding-left:20px;padding-right:20px;}img.round-image{border-radius:50%;}#method{display:none;}#color-grid{display:flex;flex-direction:column;align-items:flex-start;}.color-row{display:flex;width:100%;justify-content:space-evenly;margin-bottom:10px;}.color-block{width:50px;height:50px;}.color-block-label{width:50px;text-align:center;}</style>
 	<title>Cvisim 色觉模拟器</title>
         <script src='https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js'></script>
         <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css'/>
@@ -90,111 +45,19 @@
 <p>对于蓝色盲来说，在蓝色弱的基础上，“蓝色弱”的模拟也不准确。</p>
 <p>对于单色视者（如全色盲、蓝锥单色视）来说，只有单色视觉的模拟才是准确的。</p>
 <p>以上内容不讨论“红蓝通道互换”，因为这是用来帮助色觉异常者区分颜色的。</p>
-<h2>RGB和LMS互转</h2>
-<style>
-    #colorBox {
-        width: 100px;
-        height: 100px;
-        background-color: rgb(0, 0, 0);
-    }
-</style>
-<div id="colorBox"></div>
-<p>Red: <input type="range" min="0" max="255" id="redSlider" value="0"> <input type="number" min="0" max="255" id="redInput" value="0"></p>
-<p>Green: <input type="range" min="0" max="255" id="greenSlider" value="0"> <input type="number" min="0" max="255" id="greenInput" value="0"></p>
-<p>Blue: <input type="range" min="0" max="255" id="blueSlider" value="0"> <input type="number" min="0" max="255" id="blueInput" value="0"></p>
-<p>L: <input type="range" min="0" max="1" step="0.01" id="LSlider" value="0"> <input type="number" min="0" max="1" step="0.01" id="LInput" value="0"></p>
-<p>M: <input type="range" min="0" max="1" step="0.01" id="MSlider" value="0"> <input type="number" min="0" max="1" step="0.01" id="MInput" value="0"></p>
-<p>S: <input type="range" min="0" max="1" step="0.01" id="SSlider" value="0"> <input type="number" min="0" max="1" step="0.01" id="SInput" value="0"></p>
-
-<script>
-    // RGB sliders and inputs
-    var redSlider = document.getElementById("redSlider");
-    var greenSlider = document.getElementById("greenSlider");
-    var blueSlider = document.getElementById("blueSlider");
-    var redInput = document.getElementById("redInput");
-    var greenInput = document.getElementById("greenInput");
-    var blueInput = document.getElementById("blueInput");
-
-    // LMS sliders and inputs
-    var LSlider = document.getElementById("LSlider");
-    var MSlider = document.getElementById("MSlider");
-    var SSlider = document.getElementById("SSlider");
-    var LInput = document.getElementById("LInput");
-    var MInput = document.getElementById("MInput");
-    var SInput = document.getElementById("SInput");
-
-    var colorBox = document.getElementById("colorBox");
-
-    // RGB to LMS conversion matrix
-    var rgb2lms = [
-        [0.3811, 0.5783, 0.0402],
-        [0.1967, 0.7244, 0.0782],
-        [0.0241, 0.1288, 0.8444]
-    ];
-
-    // LMS to RGB conversion matrix
-    var lms2rgb = [
-        [4.4679, -3.5873, 0.1193],
-        [-1.2186, 2.3809, -0.1624],
-        [0.0497, -0.2439, 1.2045]
-    ];
-
-        function matrixMultiply(a, b) {
-            var result = [0, 0, 0];
-            for (var i = 0; i < 3; i++) {
-                for (var j = 0; j < 3; j++) {
-                    result[i] += a[i][j] * b[j];
-                }
-            }
-            return result;
-        }
-
-        function setColorFromRGB() {
-            var rgb = [redSlider.value / 255, greenSlider.value / 255, blueSlider.value / 255];
-            var lms = matrixMultiply(rgb2lms, rgb);
-
-            colorBox.style.backgroundColor = "rgb(" + rgb.map(v => v * 255) + ")";
-            redInput.value = redSlider.value;
-            greenInput.value = greenSlider.value;
-            blueInput.value = blueSlider.value;
-
-            LSlider.value = LInput.value = lms[0];
-            MSlider.value = MInput.value = lms[1];
-            SSlider.value = SInput.value = lms[2];
-        }
-
-        function setColorFromLMS() {
-            var lms = [LSlider.value, MSlider.value, SSlider.value];
-            var rgb = matrixMultiply(lms2rgb, lms);
-            var rgbScaled = rgb.map(v => v * 255);
-
-            // Check if RGB values are within the valid range
-            if (rgbScaled.every(value => value >= 0 && value <= 255)) {
-                colorBox.style.backgroundColor = "rgb(" + rgbScaled + ")";
-                redSlider.value = redInput.value = rgbScaled[0];
-                greenSlider.value = greenInput.value = rgbScaled[1];
-                blueSlider.value = blueInput.value = rgbScaled[2];
-
-                LInput.value = LSlider.value;
-                MInput.value = MSlider.value;
-                SInput.value = SSlider.value;
-            }
-        }
-
-        redSlider.addEventListener("input", setColorFromRGB);
-        greenSlider.addEventListener("input", setColorFromRGB);
-        blueSlider.addEventListener("input", setColorFromRGB);
-        redInput.addEventListener("input", setColorFromRGB);
-        greenInput.addEventListener("input", setColorFromRGB);
-        blueInput.addEventListener("input", setColorFromRGB);
-
-        LSlider.addEventListener("input", setColorFromLMS);
-        MSlider.addEventListener("input", setColorFromLMS);
-        SSlider.addEventListener("input", setColorFromLMS);
-        LInput.addEventListener("input", setColorFromLMS);
-        MInput.addEventListener("input", setColorFromLMS);
-        SInput.addEventListener("input", setColorFromLMS);
-</script>
+<h2>无障碍设计 - 颜色选择器</h2>
+<input type="color" id="color-picker">
+<button onclick="addToList()">添加到列表</button>
+<div id="color-grid">
+    <div id="color-row-header" class="color-row">
+        <div class="color-block-label">正常</div>
+        <div class="color-block-label">红色盲</div>
+        <div class="color-block-label">绿色盲</div>
+        <div class="color-block-label">蓝色盲</div>
+        <div class="color-block-label">全色盲</div>
+    </div>
+</div>
+<script>function hexToRgb(hex){var result=/^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);return result?[parseInt(result[1],16),parseInt(result[2],16),parseInt(result[3],16)]:null}function rgbToCss(rgb){return`rgb(${rgb[0]},${rgb[1]},${rgb[2]})`}function addToList(){var colorPicker=document.getElementById("color-picker");var originalRgb=hexToRgb(colorPicker.value);var protanRgb=brettel(originalRgb,'protan',1.0);var deutanRgb=brettel(originalRgb,'deutan',1.0);var tritanRgb=brettel(originalRgb,'tritan',1.0);var achromatopsiaRgb=monochrome_with_severity(originalRgb,1.0);var colorGrid=document.getElementById("color-grid");var colors=[originalRgb,protanRgb,deutanRgb,tritanRgb,achromatopsiaRgb].map(rgbToCss);var colorRow=document.createElement("div");colorRow.className="color-row";for(var i=0;i<colors.length;i++){var colorBlock=document.createElement("div");colorBlock.className="color-block";colorBlock.style.backgroundColor=colors[i];colorRow.appendChild(colorBlock)}colorGrid.appendChild(colorRow)}</script>
         </div>
         <div class="container" style="">
             <div>
