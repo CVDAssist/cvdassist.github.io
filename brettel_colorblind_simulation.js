@@ -135,7 +135,7 @@ function rgb_to_lms(rgb) {
 }
 
 function monochrome_with_severity(srgb, severity) {
-    var z = sRGB_to_linearRGB_Lookup[srgb[0]] * 0 + sRGB_to_linearRGB_Lookup[srgb[1]] * 0.628 + sRGB_to_linearRGB_Lookup[srgb[2]] * 0.372;
+    var z = sRGB_to_linearRGB_Lookup[srgb[0]] * 0.01 + sRGB_to_linearRGB_Lookup[srgb[1]] * 0.619 + sRGB_to_linearRGB_Lookup[srgb[2]] * 0.371;
     var r = sRGB_from_linearRGB(z*severity + (1.0-severity)*sRGB_to_linearRGB_Lookup[srgb[0]]);
     var g = sRGB_from_linearRGB(z*severity + (1.0-severity)*sRGB_to_linearRGB_Lookup[srgb[1]]);
     var b = sRGB_from_linearRGB(z*severity + (1.0-severity)*sRGB_to_linearRGB_Lookup[srgb[2]]);
