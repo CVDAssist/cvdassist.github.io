@@ -30,6 +30,7 @@
 <p>* 红锥单色视（Red-cone monochromacy）：只有L型视锥细胞正常工作</p>
 <p>* 绿锥单色视（Green-cone monochromacy）：只有M型视锥细胞正常工作</p>
 <p>* 红蓝通道互换（Flip Red-Blue）：互换R和B通道，帮助色觉异常者区分之前较难区分的颜色，或探究色盲悖论</p>
+<p>* 灰度（Grayscale）：把图片转换为灰度，但注意这并不代表任何一种色觉异常</p>
 <h2>模拟方法介绍</h2>
 <p>本模拟的大部分代码来自MaPePeR的开源模拟器<a href="http://mapeper.github.io/jsColorblindSimulator/">http://mapeper.github.io/jsColorblindSimulator/</a>，在此表示感谢。</p>
 <p>Simon-Liedtke, J. T., & Farup, I. (2016) 对比了多种模拟方法，最终得出Brettel的模拟是最准确的。</p>
@@ -79,6 +80,7 @@
 <label><input type="radio" name="colorblindType" value="RCM"/>红锥单色视</label>
 <label><input type="radio" name="colorblindType" value="GCM"/>绿锥单色视</label>
 <label><input type="radio" name="colorblindType" value="Flip"/>红蓝通道互换</label>
+<label><input type="radio" name="colorblindType" value="Grayscale"/>灰度</label>
 <label style="margin-left: 1em;display: none;">Severity:<input type="range" min="0" max="100" value="50" class="slider" id="severity"></label>
 
 <select id="method">
@@ -126,7 +128,7 @@ function filterOrImageChanged() {
     document.getElementById('imageLink').style.display = type === "Normal" ? "none" : "inline";
     var isMachado = method == "macha";
     document.getElementById('severity').parentElement.style.display = isMachado ? 'inline' : 'none';
-    ['Protanopia', 'Deuteranopia', 'Tritanopia', 'Achromatopsia', 'Tetartanopia', 'Tetartanomaly', 'BCM', 'RCM', 'GCM', 'Flip'].forEach((item, i) => {
+    ['Protanopia', 'Deuteranopia', 'Tritanopia', 'Achromatopsia', 'Tetartanopia', 'Tetartanomaly', 'BCM', 'RCM', 'GCM', 'Flip', 'Grayscale'].forEach((item, i) => {
         document.querySelector('input[type="radio"][value="' + item + '"]').parentElement.style.display = isMachado ? 'none' : 'inline';
     });
     if (method == 'macha' && type != "Normal") {

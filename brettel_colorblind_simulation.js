@@ -31,6 +31,7 @@ var brettelFunctions = {
     RCM: function (v) { return monochrome_rcm_srgb(v); },
     GCM: function (v) { return monochrome_gcm_srgb(v); },
     Flip: function (v) { return flip_rb(v); },
+    Grayscale: function (v) { return convert_to_grayscale(v); },
 };
 
 var sRGB_to_linearRGB_Lookup = Array(256);
@@ -170,4 +171,9 @@ function flip_rb(srgb) {
     srgb[2] = srgb[0];
     srgb[0] = blueChannel
     return srgb;
+}
+
+function convert_to_grayscale(srgb) {
+    var z = sRGB_to_linearRGB_Lookup[srgb[0]] * 0.212656 + sRGB_to_linearRGB_Lookup[srgb[1]] * 0.715158 + sRGB_to_linearRGB_Lookup[srgb[2]] * 0.072186;
+    return [z, z, z];
 }
