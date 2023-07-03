@@ -174,6 +174,6 @@ function flip_rb(srgb) {
 }
 
 function convert_to_grayscale(srgb) {
-    var z = sRGB_to_linearRGB_Lookup[srgb[0]] * 0.212656 + sRGB_to_linearRGB_Lookup[srgb[1]] * 0.715158 + sRGB_to_linearRGB_Lookup[srgb[2]] * 0.072186;
+    var z = sRGB_from_linearRGB(sRGB_to_linearRGB_Lookup[srgb[0]] * 0.212656 + sRGB_to_linearRGB_Lookup[srgb[1]] * 0.715158 + sRGB_to_linearRGB_Lookup[srgb[2]] * 0.072186);
     return [z, z, z];
 }
